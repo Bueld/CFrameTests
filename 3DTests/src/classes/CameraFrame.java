@@ -114,7 +114,7 @@ public class CameraFrame extends Application {
 		Pane pane = new Pane();
 		pane.getChildren().addAll(bGroup, lights);
 
-		Scene scene = new Scene(pane, 800, 800, true, SceneAntialiasing.BALANCED);
+		Scene scene = new Scene(pane, 800, 800, true, SceneAntialiasing.DISABLED);
 		scene.setCamera(cam1);
 		scene.setFill(Color.rgb(20, 4, 40));
 
