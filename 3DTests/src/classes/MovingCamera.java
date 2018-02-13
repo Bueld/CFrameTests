@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
@@ -13,6 +14,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Box;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 
 public class MovingCamera extends Application {
@@ -20,8 +22,10 @@ public class MovingCamera extends Application {
 	private PerspectiveCamera camera;
 
 	private ArrayList<Box> blocks = new ArrayList<Box>();
-	private Point3D cPoint = new Point3D(0, 0, 0);
+	private Point3D cPoint = new Point3D(-300, 0, -100);
 	private double speed = 6;
+	
+	private Group cGroup;
 
 	@Override
 	public void init() {
@@ -44,20 +48,25 @@ public class MovingCamera extends Application {
 		}
 
 		camera = new PerspectiveCamera();
-		camera.setTranslateX(cPoint.getX());
-		camera.setTranslateY(cPoint.getY());
-		camera.setTranslateZ(cPoint.getZ());
 		camera.setNearClip(0.1);
 		camera.setFarClip(5000.0);
+		camera.setFieldOfView(52);
 	}
 
 	@Override
 	public void start(final Stage stage) {
 		Group bGroup = new Group();
 		bGroup.getChildren().addAll(blocks);
+		
+		cGroup = new Group();
+		cGroup.getChildren().add(camera);
+		
+		cGroup.setTranslateX(cPoint.getX());
+		cGroup.setTranslateY(cPoint.getY());
+		cGroup.setTranslateZ(cPoint.getZ());
 
 		StackPane pane = new StackPane();
-		pane.getChildren().addAll(bGroup);
+		pane.getChildren().addAll(bGroup, cGroup);
 
 		Scene scene = new Scene(pane, 800, 800, true, SceneAntialiasing.DISABLED);
 		scene.setCamera(camera);
@@ -91,8 +100,8 @@ public class MovingCamera extends Application {
 
 				}
 
-				camera.setTranslateX(cPoint.getX());
-				camera.setTranslateZ(cPoint.getZ());
+				cGroup.setTranslateX(cPoint.getX());
+				cGroup.setTranslateZ(cPoint.getZ());
 			}
 
 		});
@@ -106,15 +115,8 @@ public class MovingCamera extends Application {
 	}
 
 	public void rotateCamera(double d) {
-		camera.setTranslateX(0);
-		camera.setTranslateY(0);
-		camera.setTranslateZ(0);
-
-		camera.setRotationAxis(new Point3D(0, 1, 0));
-		camera.setRotate(camera.getRotate() + d);
-
-		camera.setTranslateX(cPoint.getX());
-		camera.setTranslateY(cPoint.getY());
-		camera.setTranslateZ(cPoint.getZ());
+		camera.setRotationAxis(Rotate.Y_AXIS);
+		camera.setRotate(camera.getRotate()+d);
 	}
+
 }
