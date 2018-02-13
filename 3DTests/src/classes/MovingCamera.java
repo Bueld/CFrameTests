@@ -21,10 +21,10 @@ public class MovingCamera extends Application {
 	private PerspectiveCamera camera;
 
 	private ArrayList<Box> blocks = new ArrayList<Box>();
-	private Point3D cPoint = new Point3D(-300, -400, -100);
-	private double speed = 6;
+	private Point3D cPoint = new Point3D(0, 0, 0);
+	private double speed = -6;
 
-	private Group cGroup;
+	private Group bGroup;
 
 	@Override
 	public void init() {
@@ -45,23 +45,28 @@ public class MovingCamera extends Application {
 				}
 			}
 		}
+		
+		
 
 		camera = new PerspectiveCamera();
 		camera.setNearClip(0.1);
 		camera.setFarClip(5000.0);
-		camera.setFieldOfView(52);
+		camera.setTranslateX(0);
+		camera.setTranslateY(0);
+		camera.setTranslateZ(0);
+		camera.setRotationAxis(Rotate.Y_AXIS);
 	}
 
 	@Override
 	public void start(final Stage stage) {
-		Group bGroup = new Group();
+		bGroup = new Group();
 		bGroup.getChildren().addAll(blocks);
-
-		cGroup = new Group();
-		cGroup.getChildren().add(camera);
+		bGroup.setTranslateX(cPoint.getX());
+		bGroup.setTranslateY(cPoint.getY());
+		bGroup.setTranslateZ(cPoint.getZ());
 
 		StackPane pane = new StackPane();
-		pane.getChildren().addAll(bGroup, cGroup);
+		pane.getChildren().addAll(bGroup);
 
 		Scene scene = new Scene(pane, 800, 800, true, SceneAntialiasing.DISABLED);
 		scene.setCamera(camera);
@@ -94,9 +99,10 @@ public class MovingCamera extends Application {
 					break;
 
 				}
-				
-				cGroup.setTranslateX(cPoint.getX());
-				cGroup.setTranslateZ(cPoint.getZ());
+
+				bGroup.setTranslateX(cPoint.getX());
+				bGroup.setTranslateY(cPoint.getY());
+				bGroup.setTranslateZ(cPoint.getZ());
 
 			}
 
@@ -111,8 +117,10 @@ public class MovingCamera extends Application {
 	}
 
 	public void rotateCamera(double d) {
-		camera.setRotationAxis(new Point3D(cGroup.getTranslateX(),cGroup.getTranslateY(),cGroup.getTranslateZ()));
 		camera.setRotate(camera.getRotate()+d);
+		System.out.println(bGroup.getTranslateX());
+		
+
 	}
 
 }
