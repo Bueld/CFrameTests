@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.PerspectiveCamera;
@@ -22,9 +21,9 @@ public class MovingCamera extends Application {
 	private PerspectiveCamera camera;
 
 	private ArrayList<Box> blocks = new ArrayList<Box>();
-	private Point3D cPoint = new Point3D(-300, 0, -100);
+	private Point3D cPoint = new Point3D(-300, -400, -100);
 	private double speed = 6;
-	
+
 	private Group cGroup;
 
 	@Override
@@ -38,9 +37,9 @@ public class MovingCamera extends Application {
 					b.setWidth(20);
 					b.setHeight(20);
 
-					b.setTranslateX((i * 50) + 20);
-					b.setTranslateY((j * 50) + 20);
-					b.setTranslateZ((k * 50) + 20);
+					b.setTranslateX((i * 100));
+					b.setTranslateY((j * 100));
+					b.setTranslateZ((k * 100));
 
 					blocks.add(b);
 				}
@@ -57,13 +56,9 @@ public class MovingCamera extends Application {
 	public void start(final Stage stage) {
 		Group bGroup = new Group();
 		bGroup.getChildren().addAll(blocks);
-		
+
 		cGroup = new Group();
 		cGroup.getChildren().add(camera);
-		
-		cGroup.setTranslateX(cPoint.getX());
-		cGroup.setTranslateY(cPoint.getY());
-		cGroup.setTranslateZ(cPoint.getZ());
 
 		StackPane pane = new StackPane();
 		pane.getChildren().addAll(bGroup, cGroup);
@@ -99,9 +94,10 @@ public class MovingCamera extends Application {
 					break;
 
 				}
-
+				
 				cGroup.setTranslateX(cPoint.getX());
 				cGroup.setTranslateZ(cPoint.getZ());
+
 			}
 
 		});
@@ -115,7 +111,7 @@ public class MovingCamera extends Application {
 	}
 
 	public void rotateCamera(double d) {
-		camera.setRotationAxis(Rotate.Y_AXIS);
+		camera.setRotationAxis(new Point3D(cGroup.getTranslateX(),cGroup.getTranslateY(),cGroup.getTranslateZ()));
 		camera.setRotate(camera.getRotate()+d);
 	}
 
