@@ -55,7 +55,6 @@ public class Frame extends Application {
 		cam1.setTranslateZ(-800);
 		cam1.setNearClip(250);
 		cam1.setFarClip(2000.0);
-		cam1.setFieldOfView(170);
 		cam1.setVerticalFieldOfView(false);
 
 
