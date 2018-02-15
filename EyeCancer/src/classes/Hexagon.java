@@ -1,9 +1,15 @@
 package classes;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
+
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
 public class Hexagon extends Polygon {
-
+	private Timer timer;
 
 	public Hexagon(double x, double y, double r) {
 
@@ -15,6 +21,19 @@ public class Hexagon extends Polygon {
 
 		
 
+	}
+
+	public void startT(int t) {
+		
+		timer = new Timer(t,new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				setFill(Color.hsb((float)Math.random()*360, 1, 1));
+			}
+			
+		});
+		timer.start();
 	}
 
 }
