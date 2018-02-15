@@ -8,6 +8,7 @@ import javax.swing.Timer;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -54,10 +55,12 @@ public class Strobo extends Application {
 		StackPane pane = new StackPane();
 		pane.setPadding(new Insets(20));
 		pane.getChildren().addAll(b);
+		
 
 		Scene scene = new Scene(pane);
 		scene.setFill(Color.rgb(30, 6, 40));
-
+		scene.setCursor(Cursor.NONE);
+		
 		stage.setScene(scene);
 		stage.setFullScreen(true);
 		stage.setFullScreenExitHint("Press ESC to exit Fullscreen");
