@@ -26,19 +26,20 @@ public class Visualizer_1 extends Application {
 		URL u = getClass().getResource("../audios/JAEGER - Until Dawn [Bass Boosted].mp3");
 		String url = u.toExternalForm();
 		player = new MediaPlayer(new Media(url));
-		
+
 		player.setCycleCount(MediaPlayer.INDEFINITE);
-		
+
 		player.setAudioSpectrumThreshold(-90);
-		
-		for(int i = 0;i<128;i++) {
-			Rectangle r = new Rectangle(i*6+5,10,4,0);
+
+		for (int i = 0; i < 128; i++) {
+			Rectangle r = new Rectangle(i * 4 + 2, 2, 2, 0);
 			r.setFill(Color.BEIGE);
 			rects.add(r);
+
 		}
-		
+
 		addVisuals();
-		
+
 	}
 
 	public void addVisuals() {
@@ -46,9 +47,9 @@ public class Visualizer_1 extends Application {
 
 			@Override
 			public void spectrumDataUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
-			
+
 				for (int i = 0; i < magnitudes.length; i++) {
-					rects.get(i).setHeight((magnitudes[i] - player.getAudioSpectrumThreshold())*8);					
+					rects.get(i).setHeight((magnitudes[i] - player.getAudioSpectrumThreshold()) * 8);
 				}
 			}
 		});
