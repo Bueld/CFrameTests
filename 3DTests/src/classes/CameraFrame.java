@@ -138,19 +138,19 @@ public class CameraFrame extends Application {
 					cam1.setTranslateZ(cCoords.getZ() - speed);
 					cCoords = new Point3D(cCoords.getX(), cCoords.getY(), cCoords.getZ() - speed);
 				}
-				if (e.getCode() == KeyCode.A) {
+				if (e.getCode() == KeyCode.Q) {
 					cam1.setTranslateY(cCoords.getY() - speed);
 					cCoords = new Point3D(cCoords.getX(), cCoords.getY() - speed, cCoords.getZ());
 				}
-				if (e.getCode() == KeyCode.D) {
+				if (e.getCode() == KeyCode.E) {
 					cam1.setTranslateY(cCoords.getY() + speed);
 					cCoords = new Point3D(cCoords.getX(), cCoords.getY() + speed, cCoords.getZ());
 				}
-				if (e.getCode() == KeyCode.Q) {
+				if (e.getCode() == KeyCode.A) {
 					cam1.setTranslateX(cCoords.getX() - speed);
 					cCoords = new Point3D(cCoords.getX() - speed, cCoords.getY(), cCoords.getZ());
 				}
-				if (e.getCode() == KeyCode.E) {
+				if (e.getCode() == KeyCode.D) {
 					cam1.setTranslateX(cCoords.getX() + speed);
 					cCoords = new Point3D(cCoords.getX() + speed, cCoords.getY(), cCoords.getZ());
 				}
