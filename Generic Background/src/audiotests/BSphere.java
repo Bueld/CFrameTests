@@ -1,30 +1,34 @@
 package audiotests;
 
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Ellipse;
+import javafx.scene.paint.PhongMaterial;
+import javafx.scene.shape.Sphere;
 
-public class ASphere extends Ellipse {
+public class BSphere extends Sphere {
 
 	private double radius;
 	private double radiusOld;
 	
 	private int animC;
 	
+	private PhongMaterial mat;
 
-
-	public ASphere(double x, double y, double r) {
+	public BSphere(double x, double y, double r) {
 
 		this.setTranslateX(x);
 		this.setTranslateY(y);
-		this.setRadiusX(r);
-		this.setRadiusY(r);
+		this.setRadius(r);
 		
 		radius = r;
 		radiusOld = r;
 
-		this.setFill(Color.hsb(Math.random()*360, 1, 1, 0.3));
-		
 		animC = 0;
+		
+		mat = new PhongMaterial();
+		Color c = Color.hsb(Math.random()*360, 1, 1, 1);
+		mat.setSpecularColor(c);
+		mat.setDiffuseColor(c);
+		this.setMaterial(mat);
 		
 	}
 
@@ -37,13 +41,11 @@ public class ASphere extends Ellipse {
 	public void setRAD() {
 		switch (animC) {
 		case 0:
-			setRadiusX(radius);
-			setRadiusY(radius);
+			setRadius(radius);
 			animC = 1;
 			break;
 		case 1:
-			setRadiusX(radiusOld);
-			setRadiusY(radiusOld);
+			setRadius(radiusOld);
 			animC = 0;
 			break;
 		}
