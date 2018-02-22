@@ -14,6 +14,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -42,6 +43,8 @@ public class Visualizer_1 extends Application {
 	private Image pl;
 	private Image pa;
 	private ImageView view;
+
+	private Slider vol;
 
 	@Override
 	public void init() {
@@ -104,8 +107,23 @@ public class Visualizer_1 extends Application {
 					timeline.play();
 					view.setImage(pa);
 					play.setGraphic(view);
+
 				}
 
+			}
+		});
+
+		vol = new Slider();
+		vol.setMin(0);
+		vol.setMax(100);
+		vol.setPrefWidth(240);
+		vol.setPrefHeight(16);
+		vol.setValue(66);
+		vol.valueProperty().addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+				player.setVolume(Double.parseDouble(newValue.toString()) / 100);
 			}
 		});
 
@@ -135,7 +153,7 @@ public class Visualizer_1 extends Application {
 		Group r = new Group();
 		r.getChildren().addAll(spheres);
 		Pane pane = new Pane();
-		pane.getChildren().addAll(r, play);
+		pane.getChildren().addAll(r, play, vol);
 		pane.setBackground(Background.EMPTY);
 
 		Scene scene = new Scene(pane, 600, 600, true, SceneAntialiasing.BALANCED);
@@ -160,6 +178,7 @@ public class Visualizer_1 extends Application {
 					// spheres.get(i).setTranslateZ(200 * Math.random() - 50);
 				}
 				play.setTranslateX(newValue.doubleValue() / 2 - play.getWidth() / 2);
+				vol.setTranslateX(newValue.doubleValue() - 20 - vol.getWidth());
 			}
 
 		});
@@ -180,7 +199,8 @@ public class Visualizer_1 extends Application {
 					// spheres.get(i).setTranslateZ(200 * Math.random() - 50);
 				}
 
-				play.setTranslateY(newValue.doubleValue() - 125);
+				play.setTranslateY(newValue.doubleValue() - 60 - play.getHeight());
+				vol.setTranslateY(newValue.doubleValue() - 60 - vol.getHeight());
 			}
 
 		});
