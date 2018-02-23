@@ -215,6 +215,7 @@ public class Visualizer_1 extends Application {
 				play.setTranslateX(newValue.doubleValue() / 2 - play.getWidth() / 2);
 				vol.setTranslateX(newValue.doubleValue() - 20 - vol.getWidth());
 
+				time.setPrefWidth(play.getTranslateX() - 20 - time.getTranslateX());
 			}
 
 		});
@@ -236,8 +237,9 @@ public class Visualizer_1 extends Application {
 				}
 
 				play.setTranslateY(newValue.doubleValue() - 60 - play.getHeight());
-				vol.setTranslateY(newValue.doubleValue() - 60 - vol.getHeight());
-				time.setTranslateY(newValue.doubleValue() - 60 - time.getHeight());
+				vol.setTranslateY(newValue.doubleValue() - 60 - vol.getHeight()-(play.getHeight()-vol.getHeight())/2);
+				time.setTranslateY(newValue.doubleValue() - 60 - time.getHeight()-(play.getHeight()-time.getHeight())/2);
+
 			}
 
 		});
