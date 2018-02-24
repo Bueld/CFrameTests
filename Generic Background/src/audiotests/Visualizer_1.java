@@ -3,7 +3,11 @@ package audiotests;
 import java.net.URL;
 import java.util.ArrayList;
 
+import javax.swing.event.ChangeEvent;
+
+import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
+import javafx.animation.RotateTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -11,6 +15,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.geometry.Point3D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
@@ -31,6 +36,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+
+
 public class Visualizer_1 extends Application {
 
 	private MediaPlayer player;
@@ -50,6 +57,10 @@ public class Visualizer_1 extends Application {
 
 	private Slider time;
 
+	private RotateTransition rot;
+	
+	private Slider speed;
+	
 	@Override
 	public void init() {
 		URL u = getClass().getResource("../audios/Yello - Desire.mp3");
@@ -161,6 +172,23 @@ public class Visualizer_1 extends Application {
 
 			}
 		});
+		
+		
+		
+		speed = new Slider();
+		speed.setMin(0);
+		speed.setMax(60);
+		speed.setPrefSize(120, 16);
+		speed.valueProperty().addListener(new ChangeListener() {
+			
+			
+
+			@Override
+			public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+				rot.setDuration(Duration.seconds(speed.getValue()));
+				
+			}
+		});
 
 	}
 
@@ -177,7 +205,7 @@ public class Visualizer_1 extends Application {
 					 * player.getAudioSpectrumThreshold()) * 8);
 					 */
 
-					spheres.get(i).setR(Math.pow((magnitudes[i] - player.getAudioSpectrumThreshold()), 1.05) * 2);
+					spheres.get(i).setR(Math.pow((magnitudes[i] - player.getAudioSpectrumThreshold())+1, 1.05) * 2);
 				}
 			}
 		});
@@ -188,7 +216,7 @@ public class Visualizer_1 extends Application {
 		Group r = new Group();
 		r.getChildren().addAll(spheres);
 		Pane pane = new Pane();
-		pane.getChildren().addAll(r, play, vol, time);
+		pane.getChildren().addAll(r, play, vol, time, speed);
 		pane.setBackground(Background.EMPTY);
 
 		Scene scene = new Scene(pane, 600, 600, true, SceneAntialiasing.BALANCED);
@@ -209,12 +237,20 @@ public class Visualizer_1 extends Application {
 				 */
 
 				for (int i = 0; i < 128; i++) {
-					spheres.get(i).setTranslateX(newValue.doubleValue() * Math.random());
+					//spheres.get(i).setTranslateX(newValue.doubleValue() * Math.random());
 					// spheres.get(i).setTranslateZ(200 * Math.random() - 50);
+					/*
+					spheres.get(127-i).setTranslateX(Math.cos(newValue.doubleValue()/360 *(i))*100*i/32 + newValue.doubleValue()/2);
+					spheres.get(127-i).setTranslateY(Math.sin(stage.getWidth()/360*(i) )*100*i/32+ stage.getWidth()/2);
+					*/
+					
+					spheres.get(127-i).setTranslateX(4*i*Math.cos(i/(2*Math.PI*Math.PI)*5)+newValue.doubleValue()/2);
+					spheres.get(127-i).setTranslateY(4*i*Math.sin(i/(2*Math.PI*Math.PI)*5)+stage.getHeight()/2);
 				}
 				play.setTranslateX(newValue.doubleValue() / 2 - play.getWidth() / 2);
-				vol.setTranslateX(newValue.doubleValue() - 20 - vol.getWidth());
+				vol.setTranslateX(play.getTranslateX()+play.getWidth()+20);
 
+				vol.setPrefWidth(newValue.doubleValue()-vol.getTranslateX()-30);
 				time.setPrefWidth(play.getTranslateX() - 20 - time.getTranslateX());
 			}
 
@@ -232,8 +268,15 @@ public class Visualizer_1 extends Application {
 				 */
 
 				for (int i = 0; i < 128; i++) {
-					spheres.get(i).setTranslateY(newValue.doubleValue() * Math.random());
+					//spheres.get(i).setTranslateY(newValue.doubleValue() * Math.random());
 					// spheres.get(i).setTranslateZ(200 * Math.random() - 50);
+					/*
+					spheres.get(127-i).setTranslateX(Math.cos(stage.getHeight()/360*(i))*100*i/32 + stage.getHeight()/2);
+					spheres.get(127-i).setTranslateY(Math.sin(newValue.doubleValue()/360*(i))*100*i/32 + newValue.doubleValue()/2);
+					*/
+					
+					spheres.get(127-i).setTranslateX(4*i*Math.cos(i/(2*Math.PI*Math.PI)*5)+stage.getWidth()/2);
+					spheres.get(127-i).setTranslateY(4*i*Math.sin(i/(2*Math.PI*Math.PI)*5)+newValue.doubleValue()/2);
 				}
 
 				play.setTranslateY(newValue.doubleValue() - 60 - play.getHeight());
@@ -243,6 +286,14 @@ public class Visualizer_1 extends Application {
 			}
 
 		});
+		
+		rot = new RotateTransition(Duration.seconds(20), r);
+		rot.setAxis(new Point3D(0, 0, 1));
+		rot.setFromAngle(0);
+		rot.setToAngle(360);
+		rot.setInterpolator(Interpolator.LINEAR);
+		rot.setCycleCount(RotateTransition.INDEFINITE);
+		
 
 		scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
@@ -252,8 +303,17 @@ public class Visualizer_1 extends Application {
 				if (e.getCode() == KeyCode.F11) {
 					stage.setFullScreen(!stage.isFullScreen());
 				}
+				if (e.getCode() == KeyCode.R) {
+					if (rot.getStatus() == javafx.animation.Animation.Status.RUNNING) {
+						rot.pause();
+					} else {
+						rot.play();
+					}
+				}
 			}
 		});
+		
+		
 
 		stage.show();
 
