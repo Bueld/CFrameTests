@@ -33,18 +33,19 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Polyline;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 
 
-public class Visualizer_1 extends Application {
+public class Visualizer_2 extends Application {
+	
+	private Polyline pol;
 
 	private MediaPlayer player;
 
-	// private ArrayList<Rectangle> rects = new ArrayList<Rectangle>();
-
-	private ArrayList<ASphere> spheres = new ArrayList<ASphere>();
 
 	private Timeline timeline;
 	private Button play;
@@ -61,6 +62,8 @@ public class Visualizer_1 extends Application {
 	
 	private Slider speed;
 	
+	private Scene scene;
+	
 	@Override
 	public void init() {
 		URL u = getClass().getResource("../audios/Yello - Desire.mp3");
@@ -70,20 +73,15 @@ public class Visualizer_1 extends Application {
 		player.setCycleCount(MediaPlayer.INDEFINITE);
 
 		player.setAudioSpectrumThreshold(-90);
+		
+		pol = new Polyline();
+		pol.setFill(Color.BEIGE);
+		pol.setStroke(Color.RED);
+		pol.setStrokeWidth(5);
 
-		/*
-		 * for (int i = 0; i < 128; i++) { Rectangle r = new Rectangle(i * 4 + 2, 2, 2,
-		 * 0); r.setFill(Color.BEIGE); rects.add(r);
-		 * 
-		 * }
-		 */
+		for (int i = 0; i < 96; i++) {
+				pol.getPoints().addAll(Math.cos((2*Math.PI)*96/(i+1))*100+300,Math.sin(2*Math.PI*96/(i+1))*100+300);
 
-		for (int i = 0; i < 8; i++) {
-			for (int j = 0; j < 16; j++) {
-				ASphere s = new ASphere(((i * 70) + 20), (j * 35) + 20, 5);
-				spheres.add(s);
-
-			}
 		}
 
 		time = new Slider();
@@ -115,9 +113,6 @@ public class Visualizer_1 extends Application {
 
 			@Override
 			public void handle(ActionEvent event) {
-				for (int i = 0; i < 128; i++) {
-					spheres.get(i).setRAD();
-				}
 
 				if (!time.isPressed() && !time.isHover()) {
 					time.setValue((player.getCurrentTime().toSeconds()));
@@ -199,29 +194,37 @@ public class Visualizer_1 extends Application {
 
 			@Override
 			public void spectrumDataUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
-
-				for (int i = 0; i < magnitudes.length; i++) {
-					/*
-					 * rects.get(i).setHeight((magnitudes[i] - player.getAudioSpectrumThreshold()) *
-					 * 8); rects.get(i).setTranslateY(600-(magnitudes[i] -
-					 * player.getAudioSpectrumThreshold()) * 8);
-					 */
-
-					spheres.get(i).setR(Math.pow((magnitudes[i] - player.getAudioSpectrumThreshold())+1, 1.05) * 2);
+				pol.getPoints().clear();
+				for (int i = 0; i <96; i++) {
+					double x = Math.cos((Math.PI)/96*(i+1)+Math.PI/2)*(90+magnitudes[i])*(5)+scene.getWidth()/2+Math.cos((Math.PI)/96*(i+1)+Math.PI/2)*80;
+					double y = Math.sin(Math.PI/96*(i+1)+Math.PI/2)*(90+magnitudes[i])*(5)+scene.getHeight()/2+Math.sin(Math.PI/96*(i+1)+Math.PI/2)*80;
+					pol.getPoints().addAll(x,y);
+					//System.out.println(magnitudes[i]);
+					
 				}
+				
+				for (int i = 0;i<96;i++) {
+					double x = Math.cos((Math.PI)/96*(i+1)+Math.PI/2)*(90+magnitudes[96-i])*(-5)+scene.getWidth()/2+Math.cos((Math.PI)/96*(i+1)+Math.PI/2)*(-1)*80;
+					double y = Math.sin(Math.PI/96*(i+1)+Math.PI/2)*(90+magnitudes[96-i])*(-5)+scene.getHeight()/2+Math.sin(Math.PI/96*(i+1)+Math.PI/2)*(-1)*80;
+					pol.getPoints().addAll(x,y);
+				}
+				
+				
 			}
+			
+			
 		});
 	}
 
 	@Override
 	public void start(Stage stage) {
 		Group r = new Group();
-		r.getChildren().addAll(spheres);
+		r.getChildren().addAll(pol);
 		Pane pane = new Pane();
 		pane.getChildren().addAll(r, play, vol, time, speed);
 		pane.setBackground(Background.EMPTY);
 
-		Scene scene = new Scene(pane, 600, 600, true, SceneAntialiasing.BALANCED);
+		scene = new Scene(pane, 600, 600, true, SceneAntialiasing.BALANCED);
 		scene.setFill(Color.rgb(30, 6, 40));
 
 		stage.setScene(scene);
@@ -231,23 +234,10 @@ public class Visualizer_1 extends Application {
 
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				/*
-				 * for(int i = 0;i<8;i++) { for (int j = 0;j<16; j++) {
-				 * spheres.get((i*16)+j).setTranslateX(newValue.doubleValue()/9*(i+1));
-				 * 
-				 * } }
-				 */
+			
 
 				for (int i = 0; i < 128; i++) {
-					//spheres.get(i).setTranslateX(newValue.doubleValue() * Math.random());
-					// spheres.get(i).setTranslateZ(200 * Math.random() - 50);
-					/*
-					spheres.get(127-i).setTranslateX(Math.cos(newValue.doubleValue()/360 *(i))*100*i/32 + newValue.doubleValue()/2);
-					spheres.get(127-i).setTranslateY(Math.sin(stage.getWidth()/360*(i) )*100*i/32+ stage.getWidth()/2);
-					*/
 					
-					spheres.get(127-i).setTranslateX(4*i*Math.cos(i/(2*Math.PI*Math.PI)*5)+newValue.doubleValue()/2);
-					spheres.get(127-i).setTranslateY(4*i*Math.sin(i/(2*Math.PI*Math.PI)*5)+stage.getHeight()/2);
 				}
 				play.setTranslateX(newValue.doubleValue() / 2 - play.getWidth() / 2);
 				vol.setTranslateX(play.getTranslateX()+play.getWidth()+20);
@@ -262,23 +252,10 @@ public class Visualizer_1 extends Application {
 
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-				/*
-				 * for(int i = 0;i<8;i++) { for (int j = 0;j<16; j++) {
-				 * spheres.get((i*16)+j).setTranslateY(newValue.doubleValue()/18*(j+1));
-				 * 
-				 * } }
-				 */
+				
 
 				for (int i = 0; i < 128; i++) {
-					//spheres.get(i).setTranslateY(newValue.doubleValue() * Math.random());
-					// spheres.get(i).setTranslateZ(200 * Math.random() - 50);
-					/*
-					spheres.get(127-i).setTranslateX(Math.cos(stage.getHeight()/360*(i))*100*i/32 + stage.getHeight()/2);
-					spheres.get(127-i).setTranslateY(Math.sin(newValue.doubleValue()/360*(i))*100*i/32 + newValue.doubleValue()/2);
-					*/
-					
-					spheres.get(127-i).setTranslateX(4*i*Math.cos(i/(2*Math.PI*Math.PI)*5)+stage.getWidth()/2);
-					spheres.get(127-i).setTranslateY(4*i*Math.sin(i/(2*Math.PI*Math.PI)*5)+newValue.doubleValue()/2);
+			
 				}
 
 				play.setTranslateY(newValue.doubleValue() - 60 - play.getHeight());
