@@ -1,9 +1,6 @@
 package audiotests;
 
 import java.net.URL;
-import java.util.ArrayList;
-
-import javax.swing.event.ChangeEvent;
 
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -21,6 +18,8 @@ import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
+import javafx.scene.effect.Light;
+import javafx.scene.effect.Lighting;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -33,7 +32,6 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.Polyline;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -66,7 +64,7 @@ public class Visualizer_2 extends Application {
 	
 	@Override
 	public void init() {
-		URL u = getClass().getResource("../audios/Yello - Desire.mp3");
+		URL u = getClass().getResource("../audios/A - B.mp3");
 		String url = u.toExternalForm();
 		player = new MediaPlayer(new Media(url));
 
@@ -74,10 +72,20 @@ public class Visualizer_2 extends Application {
 
 		player.setAudioSpectrumThreshold(-90);
 		
+		player.setVolume(0);
+		
 		pol = new Polyline();
-		pol.setFill(Color.BEIGE);
-		pol.setStroke(Color.RED);
-		pol.setStrokeWidth(5);
+		pol.setFill(Color.DARKMAGENTA);
+		
+		Lighting li = new Lighting();
+		Light.Distant l = new Light.Distant();
+		l.setColor(Color.ANTIQUEWHITE);
+		l.setAzimuth(-135);
+		li.setLight(l);
+		li.setSurfaceScale(10.0);
+		pol.setEffect(li);
+		pol.setStroke(Color.CRIMSON);
+		pol.setStrokeWidth(3);
 
 		for (int i = 0; i < 96; i++) {
 				pol.getPoints().addAll(Math.cos((2*Math.PI)*96/(i+1))*100+300,Math.sin(2*Math.PI*96/(i+1))*100+300);
@@ -132,7 +140,7 @@ public class Visualizer_2 extends Application {
 		vol.setMax(100);
 		vol.setPrefWidth(240);
 		vol.setPrefHeight(16);
-		vol.setValue(66);
+		vol.setValue(0);
 		vol.valueProperty().addListener(new ChangeListener() {
 
 			@Override
@@ -196,18 +204,26 @@ public class Visualizer_2 extends Application {
 			public void spectrumDataUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
 				pol.getPoints().clear();
 				for (int i = 0; i <96; i++) {
-					double x = Math.cos((Math.PI)/96*(i+1)+Math.PI/2)*(90+magnitudes[i])*(5)+scene.getWidth()/2+Math.cos((Math.PI)/96*(i+1)+Math.PI/2)*80;
-					double y = Math.sin(Math.PI/96*(i+1)+Math.PI/2)*(90+magnitudes[i])*(5)+scene.getHeight()/2+Math.sin(Math.PI/96*(i+1)+Math.PI/2)*80;
+					
+					double m = Math.pow((90+magnitudes[i]),1.1);
+					double x = Math.cos((Math.PI)/96*(i+1)+Math.PI/2)*m*(5)+scene.getWidth()/2+Math.cos((Math.PI)/96*(i+1)+Math.PI/2)*80;
+					double y = Math.sin(Math.PI/96*(i+1)+Math.PI/2)*m*(5)+scene.getHeight()/2+Math.sin(Math.PI/96*(i+1)+Math.PI/2)*80;
 					pol.getPoints().addAll(x,y);
 					//System.out.println(magnitudes[i]);
 					
 				}
 				
 				for (int i = 0;i<96;i++) {
-					double x = Math.cos((Math.PI)/96*(i+1)+Math.PI/2)*(90+magnitudes[96-i])*(-5)+scene.getWidth()/2+Math.cos((Math.PI)/96*(i+1)+Math.PI/2)*(-1)*80;
-					double y = Math.sin(Math.PI/96*(i+1)+Math.PI/2)*(90+magnitudes[96-i])*(-5)+scene.getHeight()/2+Math.sin(Math.PI/96*(i+1)+Math.PI/2)*(-1)*80;
+					double m = Math.pow((90+magnitudes[96-i]),1.1);
+					double x = Math.cos((Math.PI)/96*(i+1)+Math.PI/2)*m*(-5)+scene.getWidth()/2+Math.cos((Math.PI)/96*(i+1)+Math.PI/2)*(-1)*80;
+					double y = Math.sin(Math.PI/96*(i+1)+Math.PI/2)*m*(-5)+scene.getHeight()/2+Math.sin(Math.PI/96*(i+1)+Math.PI/2)*(-1)*80;
 					pol.getPoints().addAll(x,y);
 				}
+				int i = 0;
+				double m = Math.pow((90+magnitudes[i]),1.1);
+				double x = Math.cos((Math.PI)/96*(i+1)+Math.PI/2)*m*(5)+scene.getWidth()/2+Math.cos((Math.PI)/96*(i+1)+Math.PI/2)*80;
+				double y = Math.sin(Math.PI/96*(i+1)+Math.PI/2)*m*(5)+scene.getHeight()/2+Math.sin(Math.PI/96*(i+1)+Math.PI/2)*80;
+				pol.getPoints().addAll(x,y);
 				
 				
 			}
