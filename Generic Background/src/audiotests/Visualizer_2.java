@@ -14,6 +14,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Point3D;
 import javafx.scene.Group;
+import javafx.scene.PointLight;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.control.Button;
@@ -64,7 +65,7 @@ public class Visualizer_2 extends Application {
 	
 	@Override
 	public void init() {
-		URL u = getClass().getResource("../audios/A - B.mp3");
+		URL u = getClass().getResource("../audios/single sounds/all.wav");
 		String url = u.toExternalForm();
 		player = new MediaPlayer(new Media(url));
 
@@ -79,7 +80,7 @@ public class Visualizer_2 extends Application {
 		
 		Lighting li = new Lighting();
 		Light.Distant l = new Light.Distant();
-		l.setColor(Color.ANTIQUEWHITE);
+		l.setColor(Color.BLANCHEDALMOND);
 		l.setAzimuth(-135);
 		li.setLight(l);
 		li.setSurfaceScale(10.0);
@@ -234,6 +235,8 @@ public class Visualizer_2 extends Application {
 
 	@Override
 	public void start(Stage stage) {
+		
+		
 		Group r = new Group();
 		r.getChildren().addAll(pol);
 		Pane pane = new Pane();
