@@ -20,8 +20,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Menu;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.Slider;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ContextMenuEvent;
@@ -295,15 +296,15 @@ public class Visualizer_3 extends Application {
 		v6.setSelected(true);
 
 		Menu pMen1 = new Menu("Color Polygon 1");
-		MenuItem cMen1_1 = new MenuItem("CRIMSON");
-		MenuItem cMen1_2 = new MenuItem("DARKMAGENTA");
-		MenuItem cMen1_3 = new MenuItem("AQUA");
-		MenuItem cMen1_4 = new MenuItem("DARKGOLDENROD");
-		MenuItem cMen1_5 = new MenuItem("STEELBLUE");
-		MenuItem cMen1_6 = new MenuItem("CADETBLUE");
-		MenuItem cMen1_7 = new MenuItem("AZURE");
-		MenuItem cMen1_8 = new MenuItem("DARKORANGE");
-		MenuItem cMen1_9 = new MenuItem("YELLOWGREEN");
+		RadioMenuItem cMen1_1 = new RadioMenuItem("CRIMSON");
+		RadioMenuItem cMen1_2 = new RadioMenuItem("DARKMAGENTA");
+		RadioMenuItem cMen1_3 = new RadioMenuItem("AQUA");
+		RadioMenuItem cMen1_4 = new RadioMenuItem("DARKGOLDENROD");
+		RadioMenuItem cMen1_5 = new RadioMenuItem("STEELBLUE");
+		RadioMenuItem cMen1_6 = new RadioMenuItem("CADETBLUE");
+		RadioMenuItem cMen1_7 = new RadioMenuItem("AZURE");
+		RadioMenuItem cMen1_8 = new RadioMenuItem("DARKORANGE");
+		RadioMenuItem cMen1_9 = new RadioMenuItem("YELLOWGREEN");
 
 		cMen1_1.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -386,16 +387,28 @@ public class Visualizer_3 extends Application {
 			}
 
 		});
+
+		ToggleGroup gM1 = new ToggleGroup();
+		cMen1_1.setToggleGroup(gM1);
+		cMen1_2.setToggleGroup(gM1);
+		cMen1_3.setToggleGroup(gM1);
+		cMen1_4.setToggleGroup(gM1);
+		cMen1_5.setToggleGroup(gM1);
+		cMen1_6.setToggleGroup(gM1);
+		cMen1_7.setToggleGroup(gM1);
+		cMen1_8.setToggleGroup(gM1);
+		cMen1_9.setToggleGroup(gM1);
+
 		Menu pMen2 = new Menu("Color Polygon 2");
-		MenuItem cMen2_1 = new MenuItem("CRIMSON");
-		MenuItem cMen2_2 = new MenuItem("DARKMAGENTA");
-		MenuItem cMen2_3 = new MenuItem("AQUA");
-		MenuItem cMen2_4 = new MenuItem("DARKGOLDENROD");
-		MenuItem cMen2_5 = new MenuItem("STEELBLUE");
-		MenuItem cMen2_6 = new MenuItem("CADETBLUE");
-		MenuItem cMen2_7 = new MenuItem("AZURE");
-		MenuItem cMen2_8 = new MenuItem("DARKORANGE");
-		MenuItem cMen2_9 = new MenuItem("YELLOWGREEN");
+		RadioMenuItem cMen2_1 = new RadioMenuItem("CRIMSON");
+		RadioMenuItem cMen2_2 = new RadioMenuItem("DARKMAGENTA");
+		RadioMenuItem cMen2_3 = new RadioMenuItem("AQUA");
+		RadioMenuItem cMen2_4 = new RadioMenuItem("DARKGOLDENROD");
+		RadioMenuItem cMen2_5 = new RadioMenuItem("STEELBLUE");
+		RadioMenuItem cMen2_6 = new RadioMenuItem("CADETBLUE");
+		RadioMenuItem cMen2_7 = new RadioMenuItem("AZURE");
+		RadioMenuItem cMen2_8 = new RadioMenuItem("DARKORANGE");
+		RadioMenuItem cMen2_9 = new RadioMenuItem("YELLOWGREEN");
 
 		cMen2_1.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -478,16 +491,28 @@ public class Visualizer_3 extends Application {
 			}
 
 		});
+
+		ToggleGroup gM2 = new ToggleGroup();
+		cMen2_1.setToggleGroup(gM2);
+		cMen2_2.setToggleGroup(gM2);
+		cMen2_3.setToggleGroup(gM2);
+		cMen2_4.setToggleGroup(gM2);
+		cMen2_5.setToggleGroup(gM2);
+		cMen2_6.setToggleGroup(gM2);
+		cMen2_7.setToggleGroup(gM2);
+		cMen2_8.setToggleGroup(gM2);
+		cMen2_9.setToggleGroup(gM2);
+
 		Menu pMen3 = new Menu("Color Polygon 3");
-		MenuItem cMen3_1 = new MenuItem("CRIMSON");
-		MenuItem cMen3_2 = new MenuItem("DARKMAGENTA");
-		MenuItem cMen3_3 = new MenuItem("AQUA");
-		MenuItem cMen3_4 = new MenuItem("DARKGOLDENROD");
-		MenuItem cMen3_5 = new MenuItem("STEELBLUE");
-		MenuItem cMen3_6 = new MenuItem("CADETBLUE");
-		MenuItem cMen3_7 = new MenuItem("AZURE");
-		MenuItem cMen3_8 = new MenuItem("DARKORANGE");
-		MenuItem cMen3_9 = new MenuItem("YELLOWGREEN");
+		RadioMenuItem cMen3_1 = new RadioMenuItem("CRIMSON");
+		RadioMenuItem cMen3_2 = new RadioMenuItem("DARKMAGENTA");
+		RadioMenuItem cMen3_3 = new RadioMenuItem("AQUA");
+		RadioMenuItem cMen3_4 = new RadioMenuItem("DARKGOLDENROD");
+		RadioMenuItem cMen3_5 = new RadioMenuItem("STEELBLUE");
+		RadioMenuItem cMen3_6 = new RadioMenuItem("CADETBLUE");
+		RadioMenuItem cMen3_7 = new RadioMenuItem("AZURE");
+		RadioMenuItem cMen3_8 = new RadioMenuItem("DARKORANGE");
+		RadioMenuItem cMen3_9 = new RadioMenuItem("YELLOWGREEN");
 
 		cMen3_1.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -570,16 +595,28 @@ public class Visualizer_3 extends Application {
 			}
 
 		});
+
+		ToggleGroup gM3 = new ToggleGroup();
+		cMen3_1.setToggleGroup(gM3);
+		cMen3_2.setToggleGroup(gM3);
+		cMen3_3.setToggleGroup(gM3);
+		cMen3_4.setToggleGroup(gM3);
+		cMen3_5.setToggleGroup(gM3);
+		cMen3_6.setToggleGroup(gM3);
+		cMen3_7.setToggleGroup(gM3);
+		cMen3_8.setToggleGroup(gM3);
+		cMen3_9.setToggleGroup(gM3);
+
 		Menu pMen4 = new Menu("Color Polygon 4");
-		MenuItem cMen4_1 = new MenuItem("CRIMSON");
-		MenuItem cMen4_2 = new MenuItem("DARKMAGENTA");
-		MenuItem cMen4_3 = new MenuItem("AQUA");
-		MenuItem cMen4_4 = new MenuItem("DARKGOLDENROD");
-		MenuItem cMen4_5 = new MenuItem("STEELBLUE");
-		MenuItem cMen4_6 = new MenuItem("CADETBLUE");
-		MenuItem cMen4_7 = new MenuItem("AZURE");
-		MenuItem cMen4_8 = new MenuItem("DARKORANGE");
-		MenuItem cMen4_9 = new MenuItem("YELLOWGREEN");
+		RadioMenuItem cMen4_1 = new RadioMenuItem("CRIMSON");
+		RadioMenuItem cMen4_2 = new RadioMenuItem("DARKMAGENTA");
+		RadioMenuItem cMen4_3 = new RadioMenuItem("AQUA");
+		RadioMenuItem cMen4_4 = new RadioMenuItem("DARKGOLDENROD");
+		RadioMenuItem cMen4_5 = new RadioMenuItem("STEELBLUE");
+		RadioMenuItem cMen4_6 = new RadioMenuItem("CADETBLUE");
+		RadioMenuItem cMen4_7 = new RadioMenuItem("AZURE");
+		RadioMenuItem cMen4_8 = new RadioMenuItem("DARKORANGE");
+		RadioMenuItem cMen4_9 = new RadioMenuItem("YELLOWGREEN");
 
 		cMen4_1.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -662,16 +699,27 @@ public class Visualizer_3 extends Application {
 			}
 
 		});
+		ToggleGroup gM4 = new ToggleGroup();
+		cMen4_1.setToggleGroup(gM4);
+		cMen4_2.setToggleGroup(gM4);
+		cMen4_3.setToggleGroup(gM4);
+		cMen4_4.setToggleGroup(gM4);
+		cMen4_5.setToggleGroup(gM4);
+		cMen4_6.setToggleGroup(gM4);
+		cMen4_7.setToggleGroup(gM4);
+		cMen4_8.setToggleGroup(gM4);
+		cMen4_9.setToggleGroup(gM4);
+
 		Menu pMen5 = new Menu("Color Polygon 5");
-		MenuItem cMen5_1 = new MenuItem("CRIMSON");
-		MenuItem cMen5_2 = new MenuItem("DARKMAGENTA");
-		MenuItem cMen5_3 = new MenuItem("AQUA");
-		MenuItem cMen5_4 = new MenuItem("DARKGOLDENROD");
-		MenuItem cMen5_5 = new MenuItem("STEELBLUE");
-		MenuItem cMen5_6 = new MenuItem("CADETBLUE");
-		MenuItem cMen5_7 = new MenuItem("AZURE");
-		MenuItem cMen5_8 = new MenuItem("DARKORANGE");
-		MenuItem cMen5_9 = new MenuItem("YELLOWGREEN");
+		RadioMenuItem cMen5_1 = new RadioMenuItem("CRIMSON");
+		RadioMenuItem cMen5_2 = new RadioMenuItem("DARKMAGENTA");
+		RadioMenuItem cMen5_3 = new RadioMenuItem("AQUA");
+		RadioMenuItem cMen5_4 = new RadioMenuItem("DARKGOLDENROD");
+		RadioMenuItem cMen5_5 = new RadioMenuItem("STEELBLUE");
+		RadioMenuItem cMen5_6 = new RadioMenuItem("CADETBLUE");
+		RadioMenuItem cMen5_7 = new RadioMenuItem("AZURE");
+		RadioMenuItem cMen5_8 = new RadioMenuItem("DARKORANGE");
+		RadioMenuItem cMen5_9 = new RadioMenuItem("YELLOWGREEN");
 
 		cMen5_1.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -754,16 +802,28 @@ public class Visualizer_3 extends Application {
 			}
 
 		});
+
+		ToggleGroup gM5 = new ToggleGroup();
+		cMen5_1.setToggleGroup(gM5);
+		cMen5_2.setToggleGroup(gM5);
+		cMen5_3.setToggleGroup(gM5);
+		cMen5_4.setToggleGroup(gM5);
+		cMen5_5.setToggleGroup(gM5);
+		cMen5_6.setToggleGroup(gM5);
+		cMen5_7.setToggleGroup(gM5);
+		cMen5_8.setToggleGroup(gM5);
+		cMen5_9.setToggleGroup(gM5);
+
 		Menu pMen6 = new Menu("Color Polygon 6");
-		MenuItem cMen6_1 = new MenuItem("CRIMSON");
-		MenuItem cMen6_2 = new MenuItem("DARKMAGENTA");
-		MenuItem cMen6_3 = new MenuItem("AQUA");
-		MenuItem cMen6_4 = new MenuItem("DARKGOLDENROD");
-		MenuItem cMen6_5 = new MenuItem("STEELBLUE");
-		MenuItem cMen6_6 = new MenuItem("CADETBLUE");
-		MenuItem cMen6_7 = new MenuItem("AZURE");
-		MenuItem cMen6_8 = new MenuItem("DARKORANGE");
-		MenuItem cMen6_9 = new MenuItem("YELLOWGREEN");
+		RadioMenuItem cMen6_1 = new RadioMenuItem("CRIMSON");
+		RadioMenuItem cMen6_2 = new RadioMenuItem("DARKMAGENTA");
+		RadioMenuItem cMen6_3 = new RadioMenuItem("AQUA");
+		RadioMenuItem cMen6_4 = new RadioMenuItem("DARKGOLDENROD");
+		RadioMenuItem cMen6_5 = new RadioMenuItem("STEELBLUE");
+		RadioMenuItem cMen6_6 = new RadioMenuItem("CADETBLUE");
+		RadioMenuItem cMen6_7 = new RadioMenuItem("AZURE");
+		RadioMenuItem cMen6_8 = new RadioMenuItem("DARKORANGE");
+		RadioMenuItem cMen6_9 = new RadioMenuItem("YELLOWGREEN");
 
 		cMen6_1.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -846,6 +906,24 @@ public class Visualizer_3 extends Application {
 			}
 
 		});
+
+		ToggleGroup gM6 = new ToggleGroup();
+		cMen6_1.setToggleGroup(gM6);
+		cMen6_2.setToggleGroup(gM6);
+		cMen6_3.setToggleGroup(gM6);
+		cMen6_4.setToggleGroup(gM6);
+		cMen6_5.setToggleGroup(gM6);
+		cMen6_6.setToggleGroup(gM6);
+		cMen6_7.setToggleGroup(gM6);
+		cMen6_8.setToggleGroup(gM6);
+		cMen6_9.setToggleGroup(gM6);
+
+		gM1.selectToggle(cMen1_6);
+		gM2.selectToggle(cMen2_2);
+		gM3.selectToggle(cMen3_1);
+		gM4.selectToggle(cMen4_7);
+		gM5.selectToggle(cMen5_8);
+		gM6.selectToggle(cMen6_9);
 
 		pMen1.getItems().addAll(cMen1_1, cMen1_2, cMen1_3, cMen1_4, cMen1_5, cMen1_6, cMen1_7, cMen1_8, cMen1_9);
 		pMen2.getItems().addAll(cMen2_1, cMen2_2, cMen2_3, cMen2_4, cMen2_5, cMen2_6, cMen2_7, cMen2_8, cMen2_9);
