@@ -386,7 +386,7 @@ public class Visualizer_3 extends Application {
 			}
 
 		});
-		Menu pMen2 = new Menu("Color Polygon 1");
+		Menu pMen2 = new Menu("Color Polygon 2");
 		MenuItem cMen2_1 = new MenuItem("CRIMSON");
 		MenuItem cMen2_2 = new MenuItem("DARKMAGENTA");
 		MenuItem cMen2_3 = new MenuItem("AQUA");
@@ -478,7 +478,7 @@ public class Visualizer_3 extends Application {
 			}
 
 		});
-		Menu pMen3 = new Menu("Color Polygon 1");
+		Menu pMen3 = new Menu("Color Polygon 3");
 		MenuItem cMen3_1 = new MenuItem("CRIMSON");
 		MenuItem cMen3_2 = new MenuItem("DARKMAGENTA");
 		MenuItem cMen3_3 = new MenuItem("AQUA");
@@ -570,7 +570,7 @@ public class Visualizer_3 extends Application {
 			}
 
 		});
-		Menu pMen4 = new Menu("Color Polygon 1");
+		Menu pMen4 = new Menu("Color Polygon 4");
 		MenuItem cMen4_1 = new MenuItem("CRIMSON");
 		MenuItem cMen4_2 = new MenuItem("DARKMAGENTA");
 		MenuItem cMen4_3 = new MenuItem("AQUA");
@@ -662,7 +662,7 @@ public class Visualizer_3 extends Application {
 			}
 
 		});
-		Menu pMen5 = new Menu("Color Polygon 1");
+		Menu pMen5 = new Menu("Color Polygon 5");
 		MenuItem cMen5_1 = new MenuItem("CRIMSON");
 		MenuItem cMen5_2 = new MenuItem("DARKMAGENTA");
 		MenuItem cMen5_3 = new MenuItem("AQUA");
@@ -754,7 +754,7 @@ public class Visualizer_3 extends Application {
 			}
 
 		});
-		Menu pMen6 = new Menu("Color Polygon 1");
+		Menu pMen6 = new Menu("Color Polygon 6");
 		MenuItem cMen6_1 = new MenuItem("CRIMSON");
 		MenuItem cMen6_2 = new MenuItem("DARKMAGENTA");
 		MenuItem cMen6_3 = new MenuItem("AQUA");
