@@ -1,8 +1,10 @@
 package audiotests;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.chrono.Chronology;
 
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -147,7 +149,7 @@ public class Visualizer_3 extends Application {
 		vol.setMax(100);
 		vol.setPrefWidth(240);
 		vol.setPrefHeight(16);
-		vol.setValue(0);
+		vol.setValue(player.getVolume());
 		vol.valueProperty().addListener(new ChangeListener() {
 
 			@Override
@@ -215,8 +217,9 @@ public class Visualizer_3 extends Application {
 		pol5.setFill(Color.DARKMAGENTA);
 		pol6.setFill(Color.DARKMAGENTA);
 
-		chooseFile = new Button();
+		chooseFile = new Button("Choose File");
 		chooseFile.setDefaultButton(true);
+		chooseFile.setPrefSize(140, 36);
 
 	}
 
@@ -251,6 +254,21 @@ public class Visualizer_3 extends Application {
 		});
 	}
 
+	public void openFile(File f) {
+		timeline.pause();
+		player.dispose();
+		player = new MediaPlayer(new Media(f.toURI().toString()));
+
+		player.setCycleCount(MediaPlayer.INDEFINITE);
+		player.setAudioSpectrumThreshold(-90);
+		addVisuals();
+		
+		player.setVolume(vol.getValue());
+
+		timeline.play();
+		player.play();
+	}
+
 	@Override
 	public void start(Stage stage) {
 
@@ -271,14 +289,13 @@ public class Visualizer_3 extends Application {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
-				for (int i = 0; i < 128; i++) {
-
-				}
+				
 				play.setTranslateX(newValue.doubleValue() / 2 - play.getWidth() / 2);
 				vol.setTranslateX(play.getTranslateX() + play.getWidth() + 20);
 
 				vol.setPrefWidth(newValue.doubleValue() - vol.getTranslateX() - 30);
 				time.setPrefWidth(play.getTranslateX() - 20 - time.getTranslateX());
+				chooseFile.setTranslateX(newValue.doubleValue() / 2 - chooseFile.getWidth() / 2);
 			}
 
 		});
@@ -288,15 +305,12 @@ public class Visualizer_3 extends Application {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
-				for (int i = 0; i < 128; i++) {
-
-				}
-
 				play.setTranslateY(newValue.doubleValue() - 60 - play.getHeight());
 				vol.setTranslateY(
 						newValue.doubleValue() - 60 - vol.getHeight() - (play.getHeight() - vol.getHeight()) / 2);
 				time.setTranslateY(
 						newValue.doubleValue() - 60 - time.getHeight() - (play.getHeight() - time.getHeight()) / 2);
+				chooseFile.setTranslateY(newValue.doubleValue() - chooseFile.getHeight());
 
 			}
 
@@ -343,10 +357,13 @@ public class Visualizer_3 extends Application {
 				FileChooser f = new FileChooser();
 				f.setTitle("Open Music File");
 
-				
 				f.setInitialDirectory(new File("M:\\git\\CFrameTests\\Generic Background\\src\\audios"));
 
-				f.showOpenDialog(stage);
+				File file = f.showOpenDialog(stage);
+				if (file != null) {
+					openFile(file);
+				}
+
 			}
 
 		});

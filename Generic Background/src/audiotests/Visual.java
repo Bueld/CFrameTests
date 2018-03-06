@@ -1,7 +1,5 @@
 package audiotests;
 
-import java.lang.reflect.Field;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.CheckMenuItem;
@@ -29,8 +27,10 @@ public class Visual extends Polyline {
 	private CheckMenuItem toggle;
 	private Menu menu;
 	private ToggleGroup tog;
-	
-	private boolean fillable;
+	private ToggleGroup tog2;
+
+	private boolean fillO;
+	private boolean strokeO;
 
 	public Visual(double radius) {
 
@@ -160,51 +160,85 @@ public class Visual extends Polyline {
 	public Menu men(String id, String[] colors) {
 		menu = new Menu("Color Polygon " + id);
 		tog = new ToggleGroup();
+		tog2 = new ToggleGroup();
 		for (int i = 0; i < colors.length; i++) {
 			menu.getItems().add(changeColor(colors[i]));
 		}
-		menu.getItems().add(toggleFillable());
-		
+		menu.getItems().addAll(fillOnly(), strokeOnly());
+
 		return menu;
 	}
-	
-	public CheckMenuItem toggleFillable() {
-		CheckMenuItem item = new CheckMenuItem("Fillable");
-		item.setOnAction(new EventHandler<ActionEvent>(){
+
+	public RadioMenuItem fillOnly() {
+		RadioMenuItem item = new RadioMenuItem("Fill Only");
+		item.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				fillable = item.isSelected();
-				
-				if(!fillable) {
-					setFill(Color.TRANSPARENT);
-				}
-				else {
-					setFill(((Color) getStroke()));
+				fillO = item.isSelected();
+
+				if (fillO) {
+					setStroke(Color.TRANSPARENT);
+				} else {
+					if (getFill() == Color.TRANSPARENT) {
+						setStroke(Color.WHITE.brighter());
+					} else {
+						setStroke(((Color) getFill()).brighter());
+					}
 				}
 			}
-			
+
 		});
-		
-		item.setSelected(true);
-		
+
+		item.setSelected(false);
+		item.setToggleGroup(tog2);
+		return item;
+	}
+
+	public RadioMenuItem strokeOnly() {
+		RadioMenuItem item = new RadioMenuItem("Stroke Only");
+		item.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				strokeO = item.isSelected();
+
+				if (strokeO) {
+					setFill(Color.TRANSPARENT);
+				} else {
+					if (getStroke() == Color.TRANSPARENT) {
+						setFill(Color.WHITE);
+					} else {
+						setFill((((Color) getStroke()).darker()));
+					}
+
+				}
+			}
+
+		});
+		item.setSelected(false);
+		item.setToggleGroup(tog2);
 		return item;
 	}
 
 	public RadioMenuItem changeColor(String color) {
-		
+
 		Color c = Color.web(color);
-		
+
 		RadioMenuItem item = new RadioMenuItem(color);
 		item.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				if (fillable) {
-				setFill(c);
+				if (!fillO && !strokeO) {
+					setFill(c);
+					setStroke(c.brighter());
+				} else if (strokeO) {
+					setStroke(c.brighter());
+				} else if (fillO) {
+					setFill(c);
 				}
-				
-				setStroke(c.brighter());
+
 			}
 
 		});
