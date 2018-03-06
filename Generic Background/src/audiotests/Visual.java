@@ -27,10 +27,9 @@ public class Visual extends Polyline {
 	private CheckMenuItem toggle;
 	private Menu menu;
 	private ToggleGroup tog;
-	private ToggleGroup tog2;
 
-	private boolean fillO;
-	private boolean strokeO;
+	private boolean fill = true;
+	private boolean stroke = true;
 
 	public Visual(double radius) {
 
@@ -160,64 +159,61 @@ public class Visual extends Polyline {
 	public Menu men(String id, String[] colors) {
 		menu = new Menu("Color Polygon " + id);
 		tog = new ToggleGroup();
-		tog2 = new ToggleGroup();
 		for (int i = 0; i < colors.length; i++) {
 			menu.getItems().add(changeColor(colors[i]));
 		}
-		menu.getItems().addAll(fillOnly(), strokeOnly());
+		menu.getItems().addAll(showFill(), showStroke());
 
 		return menu;
 	}
 
-	public RadioMenuItem fillOnly() {
-		RadioMenuItem item = new RadioMenuItem("Fill Only");
+	public RadioMenuItem showFill() {
+		RadioMenuItem item = new RadioMenuItem("Show Fill");
 		item.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				fillO = item.isSelected();
+				fill = item.isSelected();
 
-				if (fillO) {
-					setStroke(Color.TRANSPARENT);
+				if (!fill) {
+					setFill(Color.TRANSPARENT);
 				} else {
-					if (getFill() == Color.TRANSPARENT) {
-						setStroke(Color.WHITE.brighter());
+					if (getStroke() == Color.TRANSPARENT || getStroke() == Color.TRANSPARENT.brighter()) {
+						setFill(Color.WHITE);
 					} else {
-						setStroke(((Color) getFill()).brighter());
+						setFill(getStroke());
 					}
 				}
 			}
 
 		});
 
-		item.setSelected(false);
-		item.setToggleGroup(tog2);
+		item.setSelected(true);
 		return item;
 	}
 
-	public RadioMenuItem strokeOnly() {
-		RadioMenuItem item = new RadioMenuItem("Stroke Only");
+	public RadioMenuItem showStroke() {
+		RadioMenuItem item = new RadioMenuItem("Show Stroke");
 		item.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				strokeO = item.isSelected();
+				stroke = item.isSelected();
 
-				if (strokeO) {
-					setFill(Color.TRANSPARENT);
+				if (!stroke) {
+					setStroke(Color.TRANSPARENT);
 				} else {
-					if (getStroke() == Color.TRANSPARENT) {
-						setFill(Color.WHITE);
+					if (getFill() == Color.TRANSPARENT) {
+						setStroke(Color.WHITE);
 					} else {
-						setFill((((Color) getStroke()).darker()));
+						setStroke(((Color) getFill()).brighter());
 					}
 
 				}
 			}
 
 		});
-		item.setSelected(false);
-		item.setToggleGroup(tog2);
+		item.setSelected(true);
 		return item;
 	}
 
@@ -230,13 +226,14 @@ public class Visual extends Polyline {
 
 			@Override
 			public void handle(ActionEvent event) {
-				if (!fillO && !strokeO) {
+				if (stroke && !fill) {
+					setStroke(c.brighter());
+				} else if (fill && !stroke) {
+					setFill(c);
+				}
+				else if (stroke && fill) {
 					setFill(c);
 					setStroke(c.brighter());
-				} else if (strokeO) {
-					setStroke(c.brighter());
-				} else if (fillO) {
-					setFill(c);
 				}
 
 			}

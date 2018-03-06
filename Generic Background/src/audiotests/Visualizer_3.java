@@ -100,6 +100,12 @@ public class Visualizer_3 extends Application {
 		time.setPrefSize(280, 16);
 		time.setValue(0);
 		time.setTranslateX(20);
+		
+		time.setMajorTickUnit(Duration.seconds(30).toSeconds());
+		time.setMinorTickCount(2);
+		time.setShowTickMarks(true);
+		time.setShowTickLabels(true);
+		
 		time.setOnMousePressed(new EventHandler<MouseEvent>() {
 
 			@Override
@@ -150,6 +156,11 @@ public class Visualizer_3 extends Application {
 		vol.setPrefWidth(240);
 		vol.setPrefHeight(16);
 		vol.setValue(player.getVolume());
+		
+		vol.setMajorTickUnit(25);
+		vol.setMinorTickCount(4);
+		vol.setShowTickMarks(true);
+		vol.setShowTickLabels(true);
 		vol.valueProperty().addListener(new ChangeListener() {
 
 			@Override
@@ -219,7 +230,7 @@ public class Visualizer_3 extends Application {
 
 		chooseFile = new Button("Choose File");
 		chooseFile.setDefaultButton(true);
-		chooseFile.setPrefSize(140, 36);
+		chooseFile.setPrefSize(80, 28);
 
 	}
 
@@ -263,8 +274,8 @@ public class Visualizer_3 extends Application {
 		player.setAudioSpectrumThreshold(-90);
 		addVisuals();
 		
-		player.setVolume(vol.getValue());
-
+		player.setVolume(vol.getValue());	
+	
 		timeline.play();
 		player.play();
 	}
@@ -280,9 +291,14 @@ public class Visualizer_3 extends Application {
 
 		scene = new Scene(pane, 600, 600, true, SceneAntialiasing.BALANCED);
 		scene.setFill(Color.rgb(30, 6, 40));
+		
+		
 
 		stage.setScene(scene);
 		stage.setTitle("Audio Visualizer");
+		
+		stage.setMinHeight(400);
+		stage.setMinWidth(400);
 
 		stage.widthProperty().addListener(new ChangeListener<Number>() {
 
@@ -305,12 +321,12 @@ public class Visualizer_3 extends Application {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
-				play.setTranslateY(newValue.doubleValue() - 60 - play.getHeight());
+				play.setTranslateY(newValue.doubleValue() - 90 - play.getHeight());
 				vol.setTranslateY(
-						newValue.doubleValue() - 60 - vol.getHeight() - (play.getHeight() - vol.getHeight()) / 2);
+						newValue.doubleValue() - 90 - vol.getHeight() - (play.getHeight() - vol.getHeight()) / 2);
 				time.setTranslateY(
-						newValue.doubleValue() - 60 - time.getHeight() - (play.getHeight() - time.getHeight()) / 2);
-				chooseFile.setTranslateY(newValue.doubleValue() - chooseFile.getHeight());
+						newValue.doubleValue() - 90 - time.getHeight() - (play.getHeight() - time.getHeight()) / 2);
+				chooseFile.setTranslateY(newValue.doubleValue() - chooseFile.getHeight()-50);
 
 			}
 
