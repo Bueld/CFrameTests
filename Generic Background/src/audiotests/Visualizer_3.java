@@ -1,10 +1,9 @@
 package audiotests;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.chrono.Chronology;
+import java.util.ArrayList;
+import java.util.List;
 
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -21,7 +20,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.SceneAntialiasing;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
@@ -75,17 +73,30 @@ public class Visualizer_3 extends Application {
 
 	private Button chooseFile;
 
+	private ArrayList<Media> songs;
+
 	@Override
 	public void init() {
 		URL u = getClass().getResource("../audios/Tryptamoon - Yule.mp3");
 		String url = u.toExternalForm();
-		player = new MediaPlayer(new Media(url));
-
-		player.setCycleCount(MediaPlayer.INDEFINITE);
+		songs = new ArrayList<Media>();
+		songs.add(new Media(url));
+		player = new MediaPlayer(songs.get(0));
 
 		player.setAudioSpectrumThreshold(-90);
 
-		player.setVolume(66);
+		player.setVolume(33);
+
+		player.setOnEndOfMedia(new Runnable() {
+
+			@Override
+			public void run() {
+				Media m = songs.get(0);
+				songs.remove(songs.get(0));
+				songs.add(m);
+				playNewFile(songs.get(0));
+			}
+		});
 
 		pol = new Visual(300);
 		pol2 = new Visual(300);
@@ -100,12 +111,12 @@ public class Visualizer_3 extends Application {
 		time.setPrefSize(280, 16);
 		time.setValue(0);
 		time.setTranslateX(20);
-		
+
 		time.setMajorTickUnit(Duration.seconds(30).toSeconds());
 		time.setMinorTickCount(2);
 		time.setShowTickMarks(true);
 		time.setShowTickLabels(true);
-		
+
 		time.setOnMousePressed(new EventHandler<MouseEvent>() {
 
 			@Override
@@ -156,7 +167,7 @@ public class Visualizer_3 extends Application {
 		vol.setPrefWidth(240);
 		vol.setPrefHeight(16);
 		vol.setValue(player.getVolume());
-		
+
 		vol.setMajorTickUnit(25);
 		vol.setMinorTickCount(4);
 		vol.setShowTickMarks(true);
@@ -265,19 +276,33 @@ public class Visualizer_3 extends Application {
 		});
 	}
 
-	public void openFile(File f) {
+	public void playNewFile(Media m) {
 		timeline.pause();
 		player.dispose();
-		player = new MediaPlayer(new Media(f.toURI().toString()));
+		player = new MediaPlayer(m);
 
-		player.setCycleCount(MediaPlayer.INDEFINITE);
 		player.setAudioSpectrumThreshold(-90);
 		addVisuals();
-		
-		player.setVolume(vol.getValue());	
-	
+
+		player.setVolume(vol.getValue());
+
+		player.setOnEndOfMedia(new Runnable() {
+
+			@Override
+			public void run() {
+				Media m = songs.get(0);
+				songs.remove(songs.get(0));
+				songs.add(m);
+				playNewFile(songs.get(0));
+			}
+		});
+
 		timeline.play();
 		player.play();
+	}
+
+	public void addFiles(File f) {
+		songs.add(new Media(f.toURI().toString()));
 	}
 
 	@Override
@@ -291,12 +316,10 @@ public class Visualizer_3 extends Application {
 
 		scene = new Scene(pane, 600, 600, true, SceneAntialiasing.BALANCED);
 		scene.setFill(Color.rgb(30, 6, 40));
-		
-		
 
 		stage.setScene(scene);
 		stage.setTitle("Audio Visualizer");
-		
+
 		stage.setMinHeight(400);
 		stage.setMinWidth(400);
 
@@ -305,7 +328,6 @@ public class Visualizer_3 extends Application {
 			@Override
 			public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
-				
 				play.setTranslateX(newValue.doubleValue() / 2 - play.getWidth() / 2);
 				vol.setTranslateX(play.getTranslateX() + play.getWidth() + 20);
 
@@ -326,7 +348,7 @@ public class Visualizer_3 extends Application {
 						newValue.doubleValue() - 90 - vol.getHeight() - (play.getHeight() - vol.getHeight()) / 2);
 				time.setTranslateY(
 						newValue.doubleValue() - 90 - time.getHeight() - (play.getHeight() - time.getHeight()) / 2);
-				chooseFile.setTranslateY(newValue.doubleValue() - chooseFile.getHeight()-50);
+				chooseFile.setTranslateY(newValue.doubleValue() - chooseFile.getHeight() - 50);
 
 			}
 
@@ -375,9 +397,16 @@ public class Visualizer_3 extends Application {
 
 				f.setInitialDirectory(new File("M:\\git\\CFrameTests\\Generic Background\\src\\audios"));
 
-				File file = f.showOpenDialog(stage);
-				if (file != null) {
-					openFile(file);
+				/*
+				 * File file = f.showOpenDialog(stage); if (file != null) { openFile(file); }
+				 */
+
+				List<File> list = f.showOpenMultipleDialog(stage);
+
+				if (list != null) {
+					for (File file : list) {
+						addFiles(file);
+					}
 				}
 
 			}
