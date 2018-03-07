@@ -104,61 +104,15 @@ public class Visualizer_3 extends Application {
 		pol4 = new Visual(300);
 		pol5 = new Visual(300);
 		pol6 = new Visual(300);
-
+		
 		time = new Slider();
+		time.setPrefSize(240, 16);
 		time.setMin(0);
-		time.setMax(player.getMedia().getDuration().toSeconds());
-		time.setPrefSize(280, 16);
-		time.setValue(0);
-		time.setTranslateX(20);
 
-		time.setMajorTickUnit(Duration.seconds(30).toSeconds());
-		time.setMinorTickCount(2);
-		time.setShowTickMarks(true);
-		time.setShowTickLabels(true);
+		createTime();
 
-		time.setOnMousePressed(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				player.seek((Duration.seconds(time.getValue())));
-
-			}
-		});
-		time.setOnMouseDragged(new EventHandler<Event>() {
-
-			@Override
-			public void handle(Event event) {
-				player.seek((Duration.seconds(time.getValue())));
-			}
-
-		});
-
-		timeline = new Timeline();
-		timeline.setCycleCount(Timeline.INDEFINITE);
-		timeline.getKeyFrames().add(new KeyFrame(Duration.millis(35), new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-
-				if (!time.isPressed() && !time.isHover()) {
-					time.setValue((player.getCurrentTime().toSeconds()));
-				}
-				if (time.isHover()) {
-					time.setValue((player.getCurrentTime().toSeconds()));
-				}
-
-				pol.animate(scene.getWidth(), scene.getHeight());
-				pol2.animate(scene.getWidth(), scene.getHeight());
-				pol3.animate(scene.getWidth(), scene.getHeight());
-				pol4.animate(scene.getWidth(), scene.getHeight());
-				pol5.animate(scene.getWidth(), scene.getHeight());
-				pol6.animate(scene.getWidth(), scene.getHeight());
-
-			}
-
-		}));
-
+		createTimeline();
+		
 		addVisuals();
 
 		vol = new Slider();
@@ -277,10 +231,13 @@ public class Visualizer_3 extends Application {
 	}
 
 	public void playNewFile(Media m) {
-		timeline.pause();
+		timeline.stop();
 		player.dispose();
+		
+		time = null;
+		
 		player = new MediaPlayer(m);
-
+		
 		player.setAudioSpectrumThreshold(-90);
 		addVisuals();
 
@@ -297,12 +254,72 @@ public class Visualizer_3 extends Application {
 			}
 		});
 
-		timeline.play();
+		createTime();
+		createTimeline();		
+		
 		player.play();
+		vol.adjustValue(vol.getValue());
+		timeline.play();
 	}
 
 	public void addFiles(File f) {
 		songs.add(new Media(f.toURI().toString()));
+	}
+	
+	public void createTimeline() {
+		
+		timeline = new Timeline();
+		timeline.setCycleCount(Timeline.INDEFINITE);
+		timeline.getKeyFrames().add(new KeyFrame(Duration.millis(35), new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+
+				if (!time.isPressed() && !time.isHover()) {
+					time.setValue((player.getCurrentTime().toSeconds()));
+				}
+				if (time.isHover()) {
+					time.setValue((player.getCurrentTime().toSeconds()));
+				}
+
+				pol.animate(scene.getWidth(), scene.getHeight());
+				pol2.animate(scene.getWidth(), scene.getHeight());
+				pol3.animate(scene.getWidth(), scene.getHeight());
+				pol4.animate(scene.getWidth(), scene.getHeight());
+				pol5.animate(scene.getWidth(), scene.getHeight());
+				pol6.animate(scene.getWidth(), scene.getHeight());
+
+			}
+
+		}));
+	}
+	
+	public void createTime() {
+		
+		time.setMax(player.getMedia().getDuration().toSeconds());
+		time.setValue(0);
+
+		time.setMajorTickUnit(Duration.seconds(30).toSeconds());
+		time.setMinorTickCount(2);
+		time.setShowTickMarks(true);
+		time.setShowTickLabels(true);
+
+		time.setOnMousePressed(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				player.seek((Duration.seconds(time.getValue())));
+
+			}
+		});
+		time.setOnMouseDragged(new EventHandler<Event>() {
+
+			@Override
+			public void handle(Event event) {
+				player.seek((Duration.seconds(time.getValue())));
+			}
+
+		});
 	}
 
 	@Override
@@ -310,8 +327,11 @@ public class Visualizer_3 extends Application {
 
 		Group r = new Group();
 		r.getChildren().addAll(pol6, pol5, pol4, pol, pol3, pol2);
+		
+		Group adjusts = new Group();
+		adjusts.getChildren().addAll(play,vol,time,chooseFile);
 		Pane pane = new Pane();
-		pane.getChildren().addAll(r, play, vol, time, speed, chooseFile);
+		pane.getChildren().addAll(r, adjusts/*, speed,*/);
 		pane.setBackground(Background.EMPTY);
 
 		scene = new Scene(pane, 600, 600, true, SceneAntialiasing.BALANCED);
