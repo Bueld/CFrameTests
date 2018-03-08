@@ -75,6 +75,10 @@ public class Visualizer_3 extends Application {
 
 	private ArrayList<Media> songs;
 
+	private Group r;
+	private Group adjusts;
+	private Pane pane;
+
 	@Override
 	public void init() {
 		URL u = getClass().getResource("../audios/Tryptamoon - Yule.mp3");
@@ -104,7 +108,7 @@ public class Visualizer_3 extends Application {
 		pol4 = new Visual(300);
 		pol5 = new Visual(300);
 		pol6 = new Visual(300);
-		
+
 		time = new Slider();
 		time.setPrefSize(240, 16);
 		time.setMin(0);
@@ -112,7 +116,7 @@ public class Visualizer_3 extends Application {
 		createTime();
 
 		createTimeline();
-		
+
 		addVisuals();
 
 		vol = new Slider();
@@ -233,11 +237,9 @@ public class Visualizer_3 extends Application {
 	public void playNewFile(Media m) {
 		timeline.stop();
 		player.dispose();
-		
-		time = null;
-		
+
 		player = new MediaPlayer(m);
-		
+
 		player.setAudioSpectrumThreshold(-90);
 		addVisuals();
 
@@ -254,9 +256,8 @@ public class Visualizer_3 extends Application {
 			}
 		});
 
-		createTime();
-		createTimeline();		
-		
+		time.maxProperty().set(songs.get(0).getDuration().toSeconds());
+
 		player.play();
 		vol.adjustValue(vol.getValue());
 		timeline.play();
@@ -265,9 +266,9 @@ public class Visualizer_3 extends Application {
 	public void addFiles(File f) {
 		songs.add(new Media(f.toURI().toString()));
 	}
-	
+
 	public void createTimeline() {
-		
+
 		timeline = new Timeline();
 		timeline.setCycleCount(Timeline.INDEFINITE);
 		timeline.getKeyFrames().add(new KeyFrame(Duration.millis(35), new EventHandler<ActionEvent>() {
@@ -293,10 +294,12 @@ public class Visualizer_3 extends Application {
 
 		}));
 	}
-	
+
 	public void createTime() {
-		
-		time.setMax(player.getMedia().getDuration().toSeconds());
+
+		time.setMin(0);
+
+		time.setMax(songs.get(0).getDuration().toSeconds());
 		time.setValue(0);
 
 		time.setMajorTickUnit(Duration.seconds(30).toSeconds());
@@ -320,18 +323,19 @@ public class Visualizer_3 extends Application {
 			}
 
 		});
+
 	}
 
 	@Override
 	public void start(Stage stage) {
 
-		Group r = new Group();
+		r = new Group();
 		r.getChildren().addAll(pol6, pol5, pol4, pol, pol3, pol2);
-		
-		Group adjusts = new Group();
-		adjusts.getChildren().addAll(play,vol,time,chooseFile);
-		Pane pane = new Pane();
-		pane.getChildren().addAll(r, adjusts/*, speed,*/);
+
+		adjusts = new Group();
+		adjusts.getChildren().addAll(play, vol, time, chooseFile);
+		pane = new Pane();
+		pane.getChildren().addAll(r, adjusts/* , speed, */);
 		pane.setBackground(Background.EMPTY);
 
 		scene = new Scene(pane, 600, 600, true, SceneAntialiasing.BALANCED);
